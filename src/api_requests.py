@@ -53,7 +53,6 @@ class HeadHunterAPI(RequestsAPI):
             vacancy_info['experience'] = f"Требуемый опыт: {i['experience']['name']}"
             vacancy_info['employment'] = f"Занятость: {i['employment']['name']}"
             vacancy_info['url'] = f"Ссылка на вакансию: https://www.hh.ru/vacancy/{vacancy_info['id'][4:]}"
-            vacancy_info['employment'] = f"Занятость: {i['employment']['name']}"
 
             correct_list_vacancies.append(vacancy_info)
         return correct_list_vacancies
@@ -79,6 +78,30 @@ class SuperjobAPI(RequestsAPI):
         req.close()
         json_oobj = json.loads(data_req)
         return json_oobj
+
+    def edit_list_get_vacancies(self):
+        correct_list_vacancies = []
+        for i in self.get_vacancies()['objects']:
+            vacancy_info = {}
+            vacancy_info['id'] = f"id: {i['id']}"
+            vacancy_info['employer'] = f"Компания: {i['firm_name']}"
+            vacancy_info['profession'] = f" Должность: {i['profession']}"
+            if i['payment_from'] == 0 and i['payment_to'] == 0:
+                vacancy_info['salary'] = 'Зарплата не указана'
+            elif i['payment_from'] == 0:
+                vacancy_info['salary'] = f"Зарплата: до {i['payment_to']} {i['currency']}"
+            elif i['payment_to'] == 0:
+                vacancy_info['salary'] = f"Зарплата: от {i['payment_from']} {i['currency']}"
+            else:
+                vacancy_info['salary'] = f"Зарплата: {i['payment_from']}-{i['payment_to']} {i['currency']}"
+            vacancy_info['town'] = f"Город: {i['town']['title']}"
+            vacancy_info['requirement'] = f"Требования: {i['candidat']}"
+            vacancy_info['experience'] = f"Требуемый опыт: {i['experience']['title']}"
+            vacancy_info['employment'] = f"Занятость: {i['type_of_work']['title']}"
+            vacancy_info['url'] = f"Ссылка на вакансию: {i['link']}"
+
+            correct_list_vacancies.append(vacancy_info)
+        return correct_list_vacancies
 
     def print_info(self):
         """develop-метод, для отображения инфы по запросу"""
