@@ -1,0 +1,23 @@
+from src.api_requests import HeadHunterAPI, SuperjobAPI
+
+def get_result_choise_platform(num: int, user_keyword: str):
+    if num in [1, 2]:
+        if num == 1:
+            api = HeadHunterAPI(user_keyword)
+        else:
+            api = SuperjobAPI(user_keyword)
+        request = api.get_request()
+        vacancies = api.get_vacancies(request)
+        correct_vacancies = api.edit_list_get_vacancies(vacancies)
+        return correct_vacancies
+    else:
+        api_hh = HeadHunterAPI(user_keyword)
+        api_sj = SuperjobAPI(user_keyword)
+        request_hh = api_hh.get_request()
+        request_sj = api_sj.get_request()
+        vacancies_hh = api_hh.get_vacancies(request_hh)
+        vacancies_sj = api_sj.get_vacancies(request_sj)
+        correct_vacancies_hh = api_hh.edit_list_get_vacancies(vacancies_hh)
+        correct_vacancies_sj = api_sj.edit_list_get_vacancies(vacancies_sj)
+        correct_vacancies = correct_vacancies_hh + correct_vacancies_sj
+        return correct_vacancies
