@@ -1,6 +1,14 @@
 from src.api_requests import HeadHunterAPI, SuperjobAPI
 
+
 def get_result_choise_platform(num: int, user_keyword: str):
+    """
+    выдает откорректированный под наш формат список вакансий,
+    в зависимости от вариантов ответа пользователя и заданного ключевого слова.
+    :param num: int
+    :param user_keyword: str
+    :return: список в нужном формате
+    """
     if num in [1, 2]:
         if num == 1:
             api = HeadHunterAPI(user_keyword)
