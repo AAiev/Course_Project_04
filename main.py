@@ -1,4 +1,4 @@
-from src.utils import get_result_choise_platform
+from src.utils import get_result_choise_platform, save_excel
 from src.json_saver import JSONSaver
 from src.Vacancy import Vacancy
 
@@ -44,6 +44,7 @@ def main():
                     if len(top_vacancies) == 0:
                         print('Нет вакансий, соответствующих заданным критериям.')
                     print_vacancies(top_vacancies)
+                    save_excel(top_vacancies)
                     break
                 else:
                     print('Некорректное значение. Попробуй еще раз.')
@@ -52,20 +53,24 @@ def main():
             if len(vacancies_with_salary) == 0:
                 print('Нет вакансий, соответствующих заданным критериям.')
             print_vacancies(vacancies_with_salary)
+            save_excel(vacancies_with_salary)
         elif user_choise_param == '3':
             vacancies_without_experience = jsonsaver.get_vacancies_without_experience(list_load_vacancy)
             if len(vacancies_without_experience) == 0:
                 print('Нет вакансий, соответствующих заданным критериям.')
             print_vacancies(vacancies_without_experience)
+            save_excel(vacancies_without_experience)
         elif user_choise_param == '4':
             vacancies_internship = jsonsaver.get_vacancies_internship(list_load_vacancy)
             if len(vacancies_internship) == 0:
                 print('Нет вакансий, соответствующих заданным критериям.')
                 print_vacancies(vacancies_internship)
+                save_excel(vacancies_internship)
         elif user_choise_param == '5':
             if len(list_load_vacancy) == 0:
                 print('Нет вакансий, соответствующих заданным критериям.')
             print_vacancies(list_load_vacancy)
+            save_excel(list_load_vacancy)
         elif user_choise_param.lower() == 'stop' or user_choise_param.lower() == 'стоп':
             break
         else:
