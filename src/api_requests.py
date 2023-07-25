@@ -100,7 +100,7 @@ class HeadHunterAPI(ParentAPI):
                     vacancy_info['salary_currency'] = 'rub'
                 else:
                     vacancy_info['salary_currency'] = i['salary']['currency']
-            vacancy_info['url'] = f"https://www.hh.ru/vacancy/{vacancy_info['id'][4:]}"
+            vacancy_info['url'] = f"https://www.hh.ru/vacancy/{vacancy_info['id']}"
             correct_list_vacancies.append(vacancy_info)
         return correct_list_vacancies
 
