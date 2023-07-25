@@ -2,7 +2,7 @@ import requests
 import json
 from abc import ABC, abstractmethod
 
-QUANTITY_VACANCY = 20
+QUANTITY_VACANCY = 100
 
 
 class RequestsAPI(ABC):
