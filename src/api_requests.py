@@ -17,7 +17,7 @@ class RequestsAPI(ABC):
 
 
 class ParsingError(Exception):
-    """Общий класс исключения для скриптов"""
+    """Общий класс для API"""
 
     def __init__(self, *args):
         self.message = args[0] if args else 'Ошибка получения вакансий.'
@@ -35,6 +35,7 @@ class ParentAPI(RequestsAPI):
         self.key_with_vacancies = ''
 
     def get_request(self):
+        """Запрос по API"""
         req = requests.get(self.url, self.params)
         if req.status_code != 200:
             raise ParsingError(f'Ошибка получения вакансий. Код статуса: {req.status_code}')
@@ -42,7 +43,7 @@ class ParentAPI(RequestsAPI):
             return req
 
     def get_vacancies(self, req):
-        """Выдает вакансии по ключевому слову keyword"""
+        """Получаем список вакансий"""
         data_req = req.content.decode()  # Декодируем его ответ, чтобы Кириллица отображалась корректно
         json_obj = json.loads(data_req)
         return json_obj
@@ -69,6 +70,7 @@ class HeadHunterAPI(ParentAPI):
         self.key_with_vacancies = 'items'
 
     def edit_list_get_vacancies(self, vacancy_list):
+        """ Редактируем список вакансий под свой формат"""
         correct_list_vacancies = []
         for i in vacancy_list[self.key_with_vacancies]:
             vacancy_info = {'api': 'HeadHunter',
@@ -117,6 +119,7 @@ class SuperjobAPI(ParentAPI):
         self.key_with_vacancies = 'objects'
 
     def get_request(self):
+        """Запрос по API"""
         req = requests.get(self.url, self.params, headers=self.headers)
         if req.status_code != 200:
             raise ParsingError(f'Ошибка получения вакансий. Код статуса: {req.status_code}')
@@ -124,6 +127,7 @@ class SuperjobAPI(ParentAPI):
             return req
 
     def edit_list_get_vacancies(self, vacancy_list):
+        """ Редактируем список вакансий под свой формат"""
         correct_list_vacancies = []
         for i in vacancy_list[self.key_with_vacancies]:
             vacancy_info = {'api': 'Superjob',
