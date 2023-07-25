@@ -34,6 +34,11 @@ def get_result_choise_platform(num: int, user_keyword: str):
 
 
 def save_excel(list_vac):
-    file_to_excel = pd.DataFrame.from_dict(list_vac)
-    path = os.path.join('data', 'list_vac.xlsx')
-    file_to_excel.to_excel(path)
+    user_answer = input("Сохранить вакансии в формате *.xlsx?\n")
+    if user_answer.upper() == 'YES' or 'ДА':
+        file_to_excel = pd.DataFrame.from_dict(list_vac)
+        path = os.path.join('data', 'list_vac.xlsx')
+        file_to_excel.to_excel(path)
+        print(f'Файл {path} сохранен\n')
+    else:
+        print('Файл не сохранен\n')
