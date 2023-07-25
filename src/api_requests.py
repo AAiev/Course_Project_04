@@ -2,6 +2,8 @@ import requests
 import json
 from abc import ABC, abstractmethod
 
+QUANTITY_VACANCY = 20
+
 
 class RequestsAPI(ABC):
 
@@ -60,7 +62,7 @@ class HeadHunterAPI(ParentAPI):
         super().__init__()
         self.keyword = keyword
         self.params = {'text': self.keyword,
-                       "per_page": 10,
+                       "per_page": QUANTITY_VACANCY,
                        "page": 0,
                        }
         self.url = 'https://api.hh.ru/vacancies'
@@ -69,21 +71,33 @@ class HeadHunterAPI(ParentAPI):
     def edit_list_get_vacancies(self, vacancy_list):
         correct_list_vacancies = []
         for i in vacancy_list[self.key_with_vacancies]:
-            vacancy_info = {'id': i['id'],
+            vacancy_info = {'api': 'HeadHunter',
+                            'id': i['id'],
                             'company': i['employer']['name'],
                             'profession': i['name'],
-                            'salary_currency': i['salary']['currency'],
                             'town': i['area']['name'],
                             'requirement': i['snippet']['requirement'],
-                            'experience': i['experience']['name'],
-                            'employment': i['employment']['name']
+                            'employment': i['employment']['name'],
+                            'experience': i['experience']['name']
                             }
             if i['salary'] is None:
                 vacancy_info['salary_from'] = None
                 vacancy_info['salary_to'] = None
+                vacancy_info['salary_currency'] = None
+                vacancy_info['salary_mean'] = 0
             else:
                 vacancy_info['salary_from'] = i['salary']['from']
                 vacancy_info['salary_to'] = i['salary']['to']
+                if i['salary']['from'] is None:
+                    vacancy_info['salary_mean'] = i['salary']['to']
+                elif i['salary']['to'] is None:
+                    vacancy_info['salary_mean'] = i['salary']['from']
+                else:
+                    vacancy_info['salary_mean'] = int((i['salary']['from'] + i['salary']['to']) / 2)
+                if i['salary']['currency'] == 'RUR':
+                    vacancy_info['salary_currency'] = 'rub'
+                else:
+                    vacancy_info['salary_currency'] = i['salary']['currency']
             vacancy_info['url'] = f"https://www.hh.ru/vacancy/{vacancy_info['id'][4:]}"
             correct_list_vacancies.append(vacancy_info)
         return correct_list_vacancies
@@ -94,7 +108,7 @@ class SuperjobAPI(ParentAPI):
     def __init__(self, keyword):
         super().__init__()
         self.keyword = keyword
-        self.params = {'count': 10,
+        self.params = {'count': QUANTITY_VACANCY,
                        'keyword': self.keyword}
         self.headers = {'X-Api-App-Id':
                         'v3.r.137693076.8c0a621f62c1bc4c0fadc3056207d620545fa9c6.'
@@ -112,17 +126,35 @@ class SuperjobAPI(ParentAPI):
     def edit_list_get_vacancies(self, vacancy_list):
         correct_list_vacancies = []
         for i in vacancy_list[self.key_with_vacancies]:
-            vacancy_info = {'id': i['id'],
+            vacancy_info = {'api': 'Superjob',
+                            'id': i['id'],
                             'company': i['firm_name'],
                             'profession': i['profession'],
-                            'salary_from': i['payment_from'],
-                            'salary_to': i['payment_to'],
                             'salary_currency': i['currency'],
                             'town': i['town']['title'],
                             'requirement': i['candidat'],
-                            'experience': i['experience']['title'],
                             'employment': i['type_of_work']['title'],
                             'url': i['link']
                             }
+            if i['experience']['title'] == 'Нет опыта':
+                vacancy_info['experience'] = 'Без опыта'
+            else:
+                vacancy_info['experience'] = i['experience']['title']
+            if i['payment_from'] == 0 and i['payment_to'] == 0:
+                vacancy_info['salary_mean'] = 0
+                vacancy_info['salary_from'] = None
+                vacancy_info['salary_to'] = None
+            elif i['payment_from'] == 0:
+                vacancy_info['salary_from'] = None
+                vacancy_info['salary_mean'] = i['payment_to']
+                vacancy_info['salary_to'] = i['payment_to']
+            elif i['payment_to'] == 0:
+                vacancy_info['salary_from'] = i['payment_from']
+                vacancy_info['salary_mean'] = i['payment_from']
+                vacancy_info['salary_to'] = None
+            else:
+                vacancy_info['salary_from'] = i['payment_from']
+                vacancy_info['salary_to'] = i['payment_to']
+                vacancy_info['salary_mean'] = int((i['payment_from'] + i['payment_to']) / 2)
             correct_list_vacancies.append(vacancy_info)
         return correct_list_vacancies
