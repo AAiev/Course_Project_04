@@ -1,3 +1,6 @@
+import pandas as pd
+import os
+
 from src.api_requests import HeadHunterAPI, SuperjobAPI
 
 
