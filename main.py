@@ -1,6 +1,6 @@
 from src.utils import get_result_choise_platform, save_excel
 from src.json_saver import JSONSaver
-from src.Vacancy import Vacancy
+from src.vacancy import Vacancy
 
 
 def print_vacancies(list_vacancy):

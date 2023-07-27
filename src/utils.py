@@ -2,6 +2,8 @@ from src.api_requests import HeadHunterAPI, SuperjobAPI
 import pandas as pd
 import os
 
+from src.vacancy import Vacancy
+
 
 def get_result_choise_platform(num: int, user_keyword: str):
     """
@@ -30,7 +32,12 @@ def get_result_choise_platform(num: int, user_keyword: str):
         correct_vacancies_hh = api_hh.edit_list_get_vacancies(vacancies_hh)
         correct_vacancies_sj = api_sj.edit_list_get_vacancies(vacancies_sj)
         correct_vacancies = correct_vacancies_hh + correct_vacancies_sj
-        return correct_vacancies
+        list_instances_vacancies = []
+        for i in correct_vacancies:
+            vacancy = Vacancy(i)
+            list_instances_vacancies.append(vacancy)
+
+        return list_instances_vacancies
 
 
 def save_excel(list_vac):
