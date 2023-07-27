@@ -24,7 +24,11 @@ class JSONSaver:
         path = os.path.join("data", self.filename)
         with open(path, 'r', encoding='utf-8') as file:
             load_vacancies = json.loads(file.read())
-            return load_vacancies
+            list_load_vacancy = []
+            for i in load_vacancies:
+                vacancy = Vacancy(i)
+                list_load_vacancy.append(vacancy)
+            return list_load_vacancy
 
     @staticmethod
     def get_top_vacancy(num_top, load_vacancies):
