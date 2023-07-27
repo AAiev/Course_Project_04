@@ -1,7 +1,7 @@
 import json
 import os
 from operator import itemgetter
-from pprint import pprint
+from src.vacancy import Vacancy
 
 
 class JSONSaver:
@@ -14,7 +14,6 @@ class JSONSaver:
         for i in list_instances_vacancies:
             dict_i = i.__dict__
             data_list.append(dict_i)
-        pprint(data_list)
         path = os.path.join("data", self.filename)
         with open(path, 'w', encoding='utf-8') as file:
             json.dump(data_list, file, ensure_ascii=False, indent=4)
