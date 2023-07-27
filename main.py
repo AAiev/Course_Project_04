@@ -23,10 +23,10 @@ def main():
             print('!!!Некорректное значение!!!\n')
     user_keyword = input('Введи ключевое слово для поиска вакансий: ')
 
-    correct_vacancies = get_result_choise_platform(int(user_choise_platform), user_keyword)
+    list_instances_vacancies = get_result_choise_platform(int(user_choise_platform), user_keyword)
 
     jsonsaver = JSONSaver()
-    jsonsaver.add_vacancy(correct_vacancies)
+    jsonsaver.add_vacancy(list_instances_vacancies)
     list_load_vacancy = jsonsaver.read_vacancies()
     while True:
         user_choise_param = input('Выбери один из вариантов фильтрации:\n'
