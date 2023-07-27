@@ -34,6 +34,7 @@ def get_result_choise_platform(num: int, user_keyword: str):
 
 
 def save_excel(list_vac):
+    """ Сохраняет полученные вакансии в формате Excel"""
     user_answer = input("Сохранить вакансии в формате *.xlsx? ДА/НЕТ\n")
     if user_answer.upper() == 'YES' or user_answer.upper() == 'ДА':
         file_to_excel = pd.DataFrame.from_dict(list_vac)
