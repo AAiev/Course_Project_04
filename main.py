@@ -42,7 +42,7 @@ def main():
                 if quantity_top.isdigit() and 0 < int(quantity_top) <= 100:
                     top_vacancies = jsonsaver.get_top_vacancy(int(quantity_top), list_load_vacancy)
                     if len(top_vacancies) == 0:
-                        print('Нет вакансий, соответствующих заданным критериям.')
+                        print('Нет вакансий, соответствующих заданным критериям.\n')
                     else:
                         print_vacancies(top_vacancies)
                         save_excel(top_vacancies)
@@ -52,27 +52,26 @@ def main():
         elif user_choise_param == '2':
             vacancies_with_salary = jsonsaver.get_vacancies_with_salary(list_load_vacancy)
             if len(vacancies_with_salary) == 0:
-                print('Нет вакансий, соответствующих заданным критериям.')
+                print('Нет вакансий, соответствующих заданным критериям.\n')
             else:
                 print_vacancies(vacancies_with_salary)
                 save_excel(vacancies_with_salary)
         elif user_choise_param == '3':
             vacancies_without_experience = jsonsaver.get_vacancies_without_experience(list_load_vacancy)
             if len(vacancies_without_experience) == 0:
-                print('Нет вакансий, соответствующих заданным критериям.')
+                print('Нет вакансий, соответствующих заданным критериям.\n')
             print_vacancies(vacancies_without_experience)
             save_excel(vacancies_without_experience)
         elif user_choise_param == '4':
             vacancies_internship = jsonsaver.get_vacancies_internship(list_load_vacancy)
             if len(vacancies_internship) == 0:
-                print(vacancies_internship)
-                print('Нет вакансий, соответствующих заданным критериям.')
+                print('Нет вакансий, соответствующих заданным критериям.\n')
             else:
                 print_vacancies(vacancies_internship)
                 save_excel(vacancies_internship)
         elif user_choise_param == '5':
             if len(list_load_vacancy) == 0:
-                print('Нет вакансий, соответствующих заданным критериям.')
+                print('Нет вакансий, соответствующих заданным критериям.\n')
             else:
                 print_vacancies(list_load_vacancy)
                 save_excel(list_load_vacancy)
