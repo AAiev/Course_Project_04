@@ -44,7 +44,11 @@ def save_excel(list_vac):
     """ Сохраняет полученные вакансии в формате Excel"""
     user_answer = input("Сохранить вакансии в формате *.xlsx? ДА/НЕТ\n")
     if user_answer.upper() == 'YES' or user_answer.upper() == 'ДА':
-        file_to_excel = pd.DataFrame.from_dict(list_vac)
+        data_list = []
+        for i in list_vac:
+            dict_i = i.__dict__
+            data_list.append(dict_i)
+        file_to_excel = pd.DataFrame.from_dict(data_list)
         path = os.path.join('data', 'list_vac.xlsx')
         file_to_excel.to_excel(path)
         print(f'Файл {path} сохранен\n')
