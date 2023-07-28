@@ -37,33 +37,47 @@ class JSONSaver:
         :param load_vacancies: список вакансий для сортировки в ТОП
         :return: списко ТОП
         """
-        top_list_sort = sorted(load_vacancies, key=itemgetter('salary_mean'), reverse=True)
+        data_list = []
+        for i in load_vacancies:
+            dict_i = i.__dict__
+            data_list.append(dict_i)
+        top_list_sort = sorted(data_list, key=itemgetter('salary_mean'), reverse=True)
         top_list_rub = []
         for i in top_list_sort:
             if i['salary_currency'] == 'rub':
                 top_list_rub.append(i)
-        if len(top_list_rub) < num_top:
-            return top_list_rub
+        top_list_rub_vac = []
+        for i in top_list_rub:
+            vac_emp = Vacancy(i)
+            top_list_rub_vac.append(vac_emp)
+        if len(top_list_rub_vac) < num_top:
+            return top_list_rub_vac
         else:
-            return top_list_rub[:num_top]
+            return top_list_rub_vac[:num_top]
 
     @staticmethod
     def get_vacancies_with_salary(load_vacancies):
         """Выводит вакансии, в которых указана ЗП"""
         vacancies_with_salary = []
         for i in load_vacancies:
-            if i['salary_from'] is not None or i['salary_from'] is not None:
+            if i.salary_from is not None or i.salary_to is not None:
                 vacancies_with_salary.append(i)
         return vacancies_with_salary
 
     @staticmethod
     def get_vacancies_without_experience(load_vacancies):
         """ Выдает вакансии с параметром - Без опыта работы"""
-        vacancies_without_experience = [i for i in load_vacancies if i['experience'] == 'Без опыта']
+        vacancies_without_experience = []
+        for i in load_vacancies:
+            if i.experience == 'Без опыта':
+                vacancies_without_experience.append(i)
         return vacancies_without_experience
 
     @staticmethod
     def get_vacancies_internship(load_vacancies):
         """ Выдает вакансии для стажировки"""
-        vacancies_without_experience = [i for i in load_vacancies if 'стаж' in i['employment'].lower() or 'стаж' in i['profession'].lower()]
+        vacancies_without_experience = []
+        for i in load_vacancies:
+            if 'стаж' in i.employment.lower() or 'стаж' in i.profession.lower():
+                vacancies_without_experience.append(i)
         return vacancies_without_experience
