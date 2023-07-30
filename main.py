@@ -1,4 +1,4 @@
-from src.utils import get_result_choise_platform, save_excel
+from src.utils import get_result_choise_platform, save_excel, get_top_vacancy, get_vacancies_with_salary, get_vacancies_without_experience, get_vacancies_internship
 from src.json_saver import JSONSaver
 
 
@@ -32,7 +32,7 @@ def main():
             while True:
                 quantity_top = input('Сколько вакансий отобразить: 1-100?\n')
                 if quantity_top.isdigit() and 0 < int(quantity_top) <= 100:
-                    top_vacancies = jsonsaver.get_top_vacancy(int(quantity_top), list_load_vacancy)
+                    top_vacancies = get_top_vacancy(int(quantity_top), list_load_vacancy)
                     if len(top_vacancies) == 0:
                         print('Нет вакансий, соответствующих заданным критериям.\n')
                     else:
@@ -42,20 +42,20 @@ def main():
                 else:
                     print('Некорректное значение. Попробуй еще раз.')
         elif user_choise_param == '2':
-            vacancies_with_salary = jsonsaver.get_vacancies_with_salary(list_load_vacancy)
+            vacancies_with_salary = get_vacancies_with_salary(list_load_vacancy)
             if len(vacancies_with_salary) == 0:
                 print('Нет вакансий, соответствующих заданным критериям.\n')
             else:
                 [print(i) for i in vacancies_with_salary]
                 save_excel(vacancies_with_salary)
         elif user_choise_param == '3':
-            vacancies_without_experience = jsonsaver.get_vacancies_without_experience(list_load_vacancy)
+            vacancies_without_experience = get_vacancies_without_experience(list_load_vacancy)
             if len(vacancies_without_experience) == 0:
                 print('Нет вакансий, соответствующих заданным критериям.\n')
             [print(i) for i in vacancies_without_experience]
             save_excel(vacancies_without_experience)
         elif user_choise_param == '4':
-            vacancies_internship = jsonsaver.get_vacancies_internship(list_load_vacancy)
+            vacancies_internship = get_vacancies_internship(list_load_vacancy)
             if len(vacancies_internship) == 0:
                 print('Нет вакансий, соответствующих заданным критериям.\n')
             else:

@@ -14,7 +14,7 @@ class JSON_abc(ABC):
         pass
 
 
-class JSONSaver:
+class JSONSaver(JSON_abc):
     def __init__(self):
         self.filename = 'list_vacansies.json'
 
